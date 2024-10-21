@@ -1,0 +1,29 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, Length, Matches } from 'class-validator';
+import { Transform } from 'class-transformer';
+export class RegisterDto {
+  @ApiProperty({ example: 'user@example.com', description: 'User email' })
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @Transform(({ value }) => value.trim())
+  @IsNotEmpty()
+  @ApiProperty({ example: 'John Doe', description: 'User full name' })
+  name: string;
+
+  // @IsNotEmpty({ message: 'Phone should not be empty or consist of only spaces' })
+  // @ApiProperty({ example: '9984895763', description: 'User phone number' })
+  // phone: string;
+  
+  @IsNotEmpty({ message: 'Phone should not be empty or consist of only spaces' })
+  @Matches(/^\d+$/, { message: 'Phone number should only contain digits' })
+  @ApiProperty({ example: '9984895763', description: 'User phone number' })
+  phone: string;
+
+  @Transform(({value})=>value.trim())
+  @ApiProperty({ example: 'strong_password123', description: 'Password' })
+  @IsNotEmpty()
+  @Length(8, 128, { message: 'Password must be at least 8 characters long' })
+  password: string;
+}
