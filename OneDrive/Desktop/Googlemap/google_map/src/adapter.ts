@@ -13,7 +13,7 @@ export async function findResources( request: FindResourcesRequest<"folder"> ): 
   let resources: Resource[] = [];
   try {
     const places = await getPlaces(apiKey, request);
-    console.log("results", places);
+    console.log("results --- ", places);
     
     if (places?.status === "OK" && places?.results?.length > 0) {
       resources = places?.results?.map((place) => {
